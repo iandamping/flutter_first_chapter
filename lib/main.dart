@@ -87,12 +87,30 @@ class FirstScaffoldScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text("Aku adalah body"),
+        child: StatelessContainer(),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {},
       ),
     );
+  }
+}
+
+class StatelessContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Text("aku adalah stateless container",
+            style: TextStyle(fontSize: 30)),
+        decoration: BoxDecoration(
+            color: Colors.blueGrey,
+            shape: BoxShape.rectangle,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(3, 6), blurRadius: 10)
+            ],
+            border: Border.all(color: Colors.red, width: 2),borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.all(10));
   }
 }
