@@ -9,6 +9,10 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: (Text(passedMovie.tittle)),
+        actions: [FavoriteButton()],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -30,26 +34,6 @@ class DetailScreen extends StatelessWidget {
                             fontSize: 16.0, color: Colors.white),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              }),
-                        ),
-                      ),
-                      FavoriteButton(),
-                    ],
                   ),
                 ],
               ),
@@ -78,13 +62,18 @@ class FavoriteButton extends StatefulWidget {
 
 class FavoriteButtonState extends State<FavoriteButton> {
   bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: () {
-      setState((){
-        isFavorite = !isFavorite;
-      });
-    }, icon: Icon((isFavorite ? Icons.bookmark : Icons.bookmark_border),
-      color: Colors.grey,));
+    return IconButton(
+        onPressed: () {
+          setState(() {
+            isFavorite = !isFavorite;
+          });
+        },
+        icon: Icon(
+          (isFavorite ? Icons.bookmark : Icons.bookmark_border),
+          color: Colors.white,
+        ));
   }
 }
