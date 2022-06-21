@@ -1,5 +1,5 @@
 import 'package:first_chapter_flutter/detail_screen.dart';
-import 'package:first_chapter_flutter/model/TourismPlace.dart';
+import 'package:first_chapter_flutter/model/Movies.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -7,49 +7,46 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Wisata Bandung"),
+          title: Text("Favorite Movies"),
         ),
         body: ListView.builder(
+            padding: EdgeInsets.all(8.0),
             itemBuilder: (context, index) {
-              final TourismPlace place = tourismPlaceList[index];
+              final Movies movie = moviesList[index];
               return InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return DetailScreen(passedPlace: place,);
-                  }));
-                },
-                child: Card(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Image.asset(place.imageAsset),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                place.name,
-                                style: TextStyle(fontSize: 16.0),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DetailScreen(passedMovie: movie);
+                    }));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(movie.imageAsset)),
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: Container(
+                                color: Colors.black54,
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  movie.tittle,
+                                  style: const TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
+                                ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(place.location),
-                            ],
-                          ),
-                        ),
-                        flex: 2,
-                      )
-                    ],
-                  ),
-                ),
-              );
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ));
             },
-            itemCount: tourismPlaceList.length));
+            itemCount: moviesList.length));
   }
 }
