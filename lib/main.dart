@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
@@ -14,19 +16,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My first flutter',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
       ),
       home: Scaffold(
-        appBar: AppBar(title: const Text("My first flutter")),
         body: Center(child: RandomWords()),
       ),
     );
@@ -43,26 +38,71 @@ class RandomWords extends StatefulWidget {
 }
 
 class _RandomWordsState extends State<RandomWords> {
-  final _listOfSuggestions = <WordPair>[];
+  final _listOfWords = <WordPair>[];
+  final _saved = <WordPair>[];
   final _biggerFont = TextStyle(fontSize: 18);
 
   @override
   Widget build(BuildContext context) {
+    void _pushSaved() {
+      Navigator.of(context).push(MaterialPageRoute<Void>(builder: (context) {
+        final tiles = _saved.map((e) => ListTile(
+              title: Text(e.asPascalCase, style: _biggerFont),
+            ));
+        final divided = tiles.isNotEmpty
+            ? ListTile.divideTiles(
+                context: context,
+                tiles: tiles,
+              ).toList()
+            : <Widget>[];
 
-    
-    return ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        itemBuilder: (context, index) {
-          if (index.isOdd) return Divider();
+        return Scaffold(
+            appBar: AppBar(
+              title: const Text('Saved Suggestions'),
+            ),
+            body: ListView(children: divided));
+      }));
+    }
 
-          final indexes = index ~/ 2;
-          if (indexes >= _listOfSuggestions.length) {
-            _listOfSuggestions.addAll(generateWordPairs().take(10));
-          }
-          return ListTile(
-            title: Text(_listOfSuggestions[index].asPascalCase,
-                style: _biggerFont),
-          );
-        });
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Startup name generator"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: _pushSaved,
+            icon: const Icon(Icons.list),
+            tooltip: "Saved suggestions",
+          )
+        ],
+      ),
+      body: ListView.builder(
+          padding: EdgeInsets.all(16.0),
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            if (index.isOdd) return Divider();
+
+            final indexes = index ~/ 2;
+            if (indexes >= _listOfWords.length) {
+              _listOfWords.addAll(generateWordPairs().take(10));
+            }
+
+            final alreadySaved = _saved.contains(_listOfWords[index]);
+
+            return ListTile(
+              trailing: Icon(
+                  alreadySaved ? Icons.favorite : Icons.favorite_border,
+                  color: alreadySaved ? Colors.red : null,
+                  semanticLabel: alreadySaved ? "Removed from save" : "Save"),
+              title: Text(_listOfWords[index].asPascalCase, style: _biggerFont),
+              onTap: () {
+                if (alreadySaved) {
+                  _saved.remove(_listOfWords[index]);
+                } else {
+                  _saved.add(_listOfWords[index]);
+                }
+              },
+            );
+          }),
+    );
   }
 }
