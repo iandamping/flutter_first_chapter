@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 Future<MovieResponse> fetchMovie(http.Client client) async {
@@ -9,7 +10,11 @@ Future<MovieResponse> fetchMovie(http.Client client) async {
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
 
-    return MovieResponse.fromJson(jsonResponse);
+    try {
+      return MovieResponse.fromJson(jsonResponse);
+    } catch (exception) {
+      rethrow;
+    }
   } else {
     throw Exception('failed to load movies');
   }
@@ -22,11 +27,14 @@ class MovieResponse {
 
   factory MovieResponse.fromJson(Map<String, dynamic> json) {
     if (json['results'] != null) {
-      var resultObjJson = json['results'] as List;
-      // List<MovieItem> _listOfMovies = resultObjJson.map((resultsJson) => MovieItem.fromJson(resultsJson)).toList();
-      var results = resultObjJson.map((data) => MovieItem.fromJson(data)).toList();
-
-      return MovieResponse(listOfMovies: results);
+      try {
+        var resultObjJson = json['results'] as List;
+        var results =
+            resultObjJson.map((data) => MovieItem.fromJson(data)).toList();
+        return MovieResponse(listOfMovies: results);
+      } catch (exception) {
+        rethrow;
+      }
     } else {
       throw Exception('failed to load movies');
     }
@@ -40,8 +48,12 @@ class MovieItem {
   const MovieItem({required this.title, required this.posterPath});
 
   factory MovieItem.fromJson(Map<String, dynamic> json) {
-    return MovieItem(title: json['title'] as String,
-        posterPath: json['poster_path'] as String);
+    if (json['title'] != null && json['poster_path'] != null) {
+      return MovieItem(
+          title: json['title'] as String,
+          posterPath: json['poster_path'] as String);
+    } else {
+      throw Exception('failed to load movies');
+    }
   }
 }
-
