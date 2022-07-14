@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'RemoteSource.dart';
 import 'package:http/http.dart' as http;
+
+import 'movie_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +16,7 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp>{
-
+class _MyAppState extends State<MyApp> {
   late Future<MovieResponse> futureMovie;
 
   @override
@@ -37,16 +37,46 @@ class _MyAppState extends State<MyApp>{
           title: const Text('Fetch Movie'),
         ),
         body: Center(
-          child: FutureBuilder<MovieResponse>(future: futureMovie,
-              builder: (context ,snapshot){
-            if(snapshot.hasData){
-              return Text(snapshot.data!.listOfMovies[0].title);
-            } else if(snapshot.hasError){
-              return Text('${snapshot.error}');
-            }
-            // By default, show a loading spinner.
-            return const CircularProgressIndicator();
-          }),
+          child: FutureBuilder<MovieResponse>(
+              future: futureMovie,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: snapshot.data?.listOfMovies.length,
+                      itemBuilder: (context, index) {
+                        final MovieItem movie =
+                            snapshot.data!.listOfMovies[index];
+
+                        return Card(
+                            child: Stack(
+                          children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                    "https://image.tmdb.org/t/p/w500${movie.posterPath}")),
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: Container(
+                                color: Colors.black54,
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  movie.title,
+                                  style: const TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
+                                ),
+                              ),
+                            )
+                          ],
+                        ));
+                      });
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                // By default, show a loading spinner.
+                return const CircularProgressIndicator();
+              }),
         ),
       ),
     );

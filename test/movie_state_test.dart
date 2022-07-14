@@ -1,10 +1,10 @@
-import 'package:first_chapter_flutter/RemoteSource.dart';
+import 'package:first_chapter_flutter/movie_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'RemoteSourceTest.mocks.dart';
+import 'movie_state_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
