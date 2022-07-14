@@ -63,12 +63,12 @@ void main() {
 }
 
 const dummyResponse =
-    "{\"results\":[{\"poster_path\":\"/wKiOkZTN9lUUUNZLmtnwubZYONg.jpg\",\"title\":\"Minions:TheRiseofGru\"}]}";
+    "{\"results\":[{\"id\":438148,\"poster_path\":\"/wKiOkZTN9lUUUNZLmtnwubZYONg.jpg\",\"title\":\"Minions:TheRiseofGru\"}]}";
 
 const dummyUnknownResponse = '{"userId": 1, "id": 2, "title": "mock"}';
 
 const dummyNullAllItemResponse =
-    "{\"results\":[{\"poster_path\":null,\"title\":null}]}";
+    "{\"results\":[{\"id\":null,\"poster_path\":null,\"title\":null}]}";
 
 const dummyNullSingleItemResponse =
-    "{\"results\":[{\"title\":\"Minions:TheRiseofGru\"}]}";
+    "{\"results\":[{\"id\":null,\"poster_path\":\"/wKiOkZTN9lUUUNZLmtnwubZYONg.jpg\",\"title\":\"Minions:TheRiseofGru\"}]}";

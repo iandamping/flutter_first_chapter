@@ -44,14 +44,19 @@ class MovieResponse {
 class MovieItem {
   final String title;
   final String posterPath;
+  final int movieId;
 
-  const MovieItem({required this.title, required this.posterPath});
+  const MovieItem(
+      {required this.title, required this.posterPath, required this.movieId});
 
   factory MovieItem.fromJson(Map<String, dynamic> json) {
-    if (json['title'] != null && json['poster_path'] != null) {
+    if (json['title'] != null &&
+        json['poster_path'] != null &&
+        json['id'] != null) {
       return MovieItem(
           title: json['title'] as String,
-          posterPath: json['poster_path'] as String);
+          posterPath: json['poster_path'] as String,
+          movieId: json['id'] as int);
     } else {
       throw Exception('failed to load movies');
     }
