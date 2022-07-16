@@ -1,4 +1,3 @@
-import 'package:first_chapter_flutter/favorite_screen.dart';
 import 'package:first_chapter_flutter/screen_argument.dart';
 import 'package:flutter/material.dart';
 
@@ -9,40 +8,38 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ScreenArgument;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.title),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, FavoriteScreen.routeName,
-                  arguments: ScreenArgument(
-                      title: "Favorite", message: "Favorite Message"));
-            },
-            child: Icon(Icons.favorite),
-          )
-        ],
+        title: Text('Detail'),
+
       ),
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Hero(
-                tag: "imageHero",
-                child: Image.network(
-                  'https://picsum.photos/250?image=9',
-                ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Close the screen and return "Yep!" as the result.
+                  Navigator.pop(context, 'Yep!');
+                },
+                child: const Text('Yep!'),
               ),
-              Text(args.message),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Close the screen and return "Yep!" as the result.
+                  Navigator.pop(context, 'Nope!');
+                },
+                child: const Text('Nope!'),
+              ),
+            ),
+          ],
         ),
       ),
     );

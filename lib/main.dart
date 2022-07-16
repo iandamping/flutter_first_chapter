@@ -1,5 +1,4 @@
 import 'package:first_chapter_flutter/detail_screen.dart';
-import 'package:first_chapter_flutter/favorite_screen.dart';
 import 'package:flutter/material.dart';
 import 'main_screen.dart';
 
@@ -32,8 +31,7 @@ class MyApp extends StatelessWidget {
         initialRoute: MainScreen.routeName,
         routes: {
           MainScreen.routeName : (context) => const MainScreen(),
-          DetailScreen.routeName : (context) => const DetailScreen(),
-          FavoriteScreen.routeName : (context) => const FavoriteScreen()
+          DetailScreen.routeName : (context) => const DetailScreen()
         },
       ),
     );
